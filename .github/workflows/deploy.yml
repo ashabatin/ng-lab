@@ -6,7 +6,7 @@ on:
       - 'main'
 
 jobs:
-  build:
+  build-and-deploy:
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -16,33 +16,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-      - name: Cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm ci
       - name: Build
         run: npm run build:ci
-      - name: Archive build
-        if: success()
-        uses: actions/upload-artifact@v1
-        with:
-          name: deploy_dist
-          path: dist
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Download build
-        uses: actions/download-artifact@v1
-        with:
-          name: deploy_dist
       - name: Deploy to GitHub Pages
         uses: ashabatin/ng-lab@main
         with:
