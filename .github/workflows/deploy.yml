@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Install dependencies
+        run: npm ci
+      - run: npm install
+       - run: npm install -g @angular/cli > /dev/null
+       - run: ng build --prod --output-path=dist --base-href="https://ashabatin.github.io/ng-lab/"
+       - name: Publish generated content to GitHub Pages
+         uses: ashabatin/actions-publish-gh-pages@v1.0.1
+         with:
+           dir: dist
+           branch: gh-pages
+           token: ${{ secrets.ACCESS_TOKEN }}
+
