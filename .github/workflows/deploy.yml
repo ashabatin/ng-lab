@@ -37,7 +37,7 @@ jobs:
         with:
           name: deploy_dist
       - name: Deploy to GitHub Pages
-        uses: ashabatin/ng-lab@0.0.0
+        uses: ashabatin/ng-lab@v0.0.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
